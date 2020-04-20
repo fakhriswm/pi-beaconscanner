@@ -52,8 +52,7 @@ def parse_events(sock, loop_count=100):
                 type = "Eddystone UID"
                 namespace = dataString[54:74].upper()
                 instance = dataString[74:86].upper()
-                resultsArray = [
-                {"type": type, "namespace": namespace, "instance": instance}]
+                resultsArray = {"type": type, "namespace": namespace, "instance": instance}
                 return resultsArray
 
             elif broadcastType == '10':
@@ -68,24 +67,24 @@ def parse_events(sock, loop_count=100):
                 elif urlprefix == '03':
                     prefix = 'https://'
                 hexUrl = dataString[56:][:-2]
-                url = prefix + hexUrl.decode("hex")
+               	url = prefix + hexUrl.decode("hex")
                 rssi, = struct.unpack("b", packet[packetOffset -1])
-                resultsArray = [{"type": type, "url": url}]
+                resultsArray = {"type": type, "url": url}
                 return resultsArray
 
             elif broadcastType == '20':
                 type = "Eddystone TLM"
-                resultsArray = [{"type": type}]
+                resultsArray = {"type": type}
                 return resultsArray
 
             elif broadcastType == '30':
                 type = "Eddystone EID"
-                resultsArray = [{"type": type}]
+                resultsArray = {"type": type}
                 return resultsArray
 
             elif broadcastType == '40':
                 type = "Eddystone RESERVED"
-                resultsArray = [{"type": type}]
+                resultsArray = {"type": type}
                 return resultsArray
 
         if dataString[38:46] == '4c000215':
@@ -109,7 +108,7 @@ def parse_events(sock, loop_count=100):
             else:
                 rssi, = struct.unpack("b", packet[packetOffset-1])
 
-            resultsArray = [{"type": type, "uuid": uuid, "major": majorVal, "minor": minorVal, "rssi": rssi, "macAddress": macAddress}]
+            resultsArray = {"type": type, "uuid": uuid, "major": majorVal, "minor": minorVal, "rssi": rssi, "macAddress": macAddress}
 
             return resultsArray
 
